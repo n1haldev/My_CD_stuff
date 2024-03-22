@@ -1,0 +1,6 @@
+folder=$1
+file=$2
+flex lexer.l
+yacc -d parser.y
+gcc lex.yy.c y.tab.c -o digvijay
+./digvijay < "$folder/$file.c"

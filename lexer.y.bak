@@ -1,0 +1,92 @@
+%{
+#include<stdio.h>
+
+extern int yylex();
+extern int yylineno;
+extern char* yytext;
+
+int yyerror_count = 0; // Define yyerror_count to track the number of errors
+
+void yyerror(char *s) {
+    printf("Error: %s, line number: %d, token: %s\n", s, yylineno, yytext);
+    yyerror_count++;
+    yyerror;  // Signal error state
+}
+%}
+
+%token HEADER KEYWORD ESC_SEQ INTEGER IDENTIFIER 
+%token INT FLOAT CHAR DOUBLE
+%token OPEN_BRACKET CLOSE_BRACKET OPEN_FBRACKET CLOSE_FBRACKET
+%token REL_OP LOG_OP ARITH_OP ASSIGN_OP UNARY_OP BIT_OP
+%token END COMMA DOUBLE_QUOTE SINGLE_QUOTE UNIDENTIFIED_TOKEN
+%token MAIN IF ELSE WHILE RETURN
+
+%%
+
+program : header main block_list END { printf("Program parsed successfully.\n"); }
+
+
+
+header : HEADER { printf("Header parsed successfully.\n"); }
+
+main : datatype  MAIN OPEN_BRACKET CLOSE_BRACKET   block_list  { printf("Main function parsed successfully.\n"); }
+
+declaration : datatype  identifier_list END { printf("Declaration parsed successfully.\n"); }
+
+identifier_list : IDENTIFIER | IDENTIFIER COMMA identifier_list ;
+
+datatype: INT | FLOAT | CHAR ;
+
+block_list : block | block block_list | return { printf("Block list parsed successfully.\n"); }
+
+return : RETURN | {printf("return parsed successfully \n ");}
+
+block : OPEN_FBRACKET stmt_list CLOSE_FBRACKET { printf("Block parsed successfully.\n"); }
+
+stmt_list : stmt | stmt stmt_list { printf("Statement list parsed successfully.\n"); }
+
+stmt : declaration | expr_stmt | control_stmt | error END { yyerrok; } { printf("Statement parsed successfully.\n"); }
+ 
+
+expr_stmt : assignment_stmt END { printf("Expression statement parsed successfully.\n"); }
+
+assignment_stmt : IDENTIFIER ASSIGN_OP expr { printf("Assignment statement parsed successfully.\n"); }
+
+control_stmt : if_stmt | while_stmt { printf("Control statement parsed successfully.\n"); }
+
+expr : rel_expr
+     | expr ARITH_OP expr { printf("Expression parsed successfully.\n"); }
+     ;
+
+term : factor
+     | term ARITH_OP factor
+     ;
+
+factor : INTEGER
+       | OPEN_BRACKET expr CLOSE_BRACKET
+       ;
+
+if_stmt : IF OPEN_BRACKET rel_expr CLOSE_BRACKET block { printf("If statement parsed successfully.\n"); }
+        | IF OPEN_BRACKET rel_expr CLOSE_BRACKET block ELSE block { printf("If-else statement parsed successfully.\n"); }
+        | IF OPEN_BRACKET rel_expr CLOSE_BRACKET block ELSE if_stmt { printf("Nested If-else statement parsed successfully.\n"); }
+        ;
+rel_expr : term
+         | rel_expr REL_OP rel_expr { printf("Relational expression parsed successfully.\n"); }
+         ;
+
+
+while_stmt : WHILE OPEN_BRACKET expr_opt CLOSE_BRACKET block { printf("While statement parsed successfully.\n"); }
+           ;
+
+expr_opt : expr | { printf("Empty expression parsed successfully.\n"); };
+
+%%
+
+int main() {
+    yyparse();
+    /* if (yyerror_count > 0) {
+        printf("Syntax errors encountered.\n");
+    } */
+    printf("%d",yyerror_count);
+    return 0;
+}
