@@ -2,6 +2,7 @@
 
 int main() {
     int a;
+    int x,y;
     int i = 0, j = 1;
     int p = 5, q = 3;
     int i = 10;
@@ -9,11 +10,14 @@ int main() {
         a = 10;
     }
 
+    int a = 5, b, c, d = 10;
+
     switch (a)
     {
-    case /* constant-expression */:
-        /* code */
+    case 10: int b = 10;
         break;
+    
+    case 9: int s = 5;
     
     default:
         break;

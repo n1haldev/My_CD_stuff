@@ -21,6 +21,8 @@ double                            {  return DOUBLE; }
 for                               { return FOR; }
 switch                            { return SWITCH; }
 case                              { return CASE; }
+break                             { return BREAK; }
+default                           { return DEFAULT; }
 \\n|\\t|\\a                       { return ESC_SEQ; }
 [0-9]+(\.[0-9]+)?                  { return INTEGER; }
 \'[a-zA-z_]\'                       { return CHARACTER; }
@@ -37,6 +39,7 @@ case                              { return CASE; }
 "++"|"--"                         { return UNARY_OP; }
 "&"|"|"|"^"|"~"|"<<"|">>"         { return BIT_OP; }
 ;                                 { return END; }
+:                                 { return COLON; }
 ,                                 { return COMMA; }
 \"                                { return DOUBLE_QUOTE; }
 \'                                { return SINGLE_QUOTE; }

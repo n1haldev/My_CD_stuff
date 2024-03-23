@@ -16,7 +16,7 @@ void yyerror(char *s) {
 
 %token HEADER KEYWORD ESC_SEQ INTEGER IDENTIFIER 
 %token INT FLOAT CHAR DOUBLE
-%token FOR SWITCH CASE
+%token FOR SWITCH CASE BREAK COLON DEFAULT
 %token OPEN_BRACKET CLOSE_BRACKET OPEN_FBRACKET CLOSE_FBRACKET
 %token REL_OP LOG_OP ARITH_OP ASSIGN_OP UNARY_OP BIT_OP
 %token END COMMA DOUBLE_QUOTE SINGLE_QUOTE UNIDENTIFIED_TOKEN CHARACTER
@@ -54,7 +54,7 @@ Empty_ListVar : ListVar | ;
 
 Stmt : SingleStmt Stmt | Block Stmt | ;
 
-SingleStmt : Decl END | Assgn END | IF OPEN_BRACKET Cond CLOSE_BRACKET Stmt | IF OPEN_BRACKET Cond CLOSE_BRACKET Stmt ELSE mystmt | WhileL | ForL ;
+SingleStmt : Decl END | Assgn END | IF OPEN_BRACKET Cond CLOSE_BRACKET Stmt | IF OPEN_BRACKET Cond CLOSE_BRACKET Stmt ELSE mystmt | WhileL | ForL | Switch ;
 
 mystmt : SingleStmt Stmt | Block Stmt ;
 
@@ -71,6 +71,16 @@ ForCond : Expr | ;
 ForIter : Assgn COMMA ForIter | Assgn | Unary COMMA ForIter | Unary | ;
 
 For_2 : OPEN_FBRACKET Stmt CLOSE_FBRACKET | SingleStmt | ;
+
+Switch : SWITCH OPEN_BRACKET Expr CLOSE_BRACKET OPEN_FBRACKET CaseList Default CLOSE_FBRACKET ;
+
+CaseList : Case CaseList | ;
+
+Case : CASE Expr COLON Stmt breakL ;
+
+Default : DEFAULT COLON Stmt breakL ;
+
+breakL : BREAK END | ;
 
 Cond : Expr | Assgn ;
 
