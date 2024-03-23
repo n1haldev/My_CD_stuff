@@ -10,7 +10,17 @@ int main() {
         a = 10;
     }
 
+    while (p > q)
+    {
+        int d = i + 2;
+    }
+    
+
     int a = 5, b, c, d = 10;
+
+    int a[10];
+    int a[5][6][7][8];
+    int a[4][4], b[5];
 
     switch (a)
     {

@@ -17,7 +17,7 @@ void yyerror(char *s) {
 %token HEADER KEYWORD ESC_SEQ INTEGER IDENTIFIER 
 %token INT FLOAT CHAR DOUBLE
 %token FOR SWITCH CASE BREAK COLON DEFAULT
-%token OPEN_BRACKET CLOSE_BRACKET OPEN_FBRACKET CLOSE_FBRACKET
+%token OPEN_BRACKET CLOSE_BRACKET OPEN_FBRACKET CLOSE_FBRACKET OPEN_SBRACKET CLOSE_SBRACKET
 %token REL_OP LOG_OP ARITH_OP ASSIGN_OP UNARY_OP BIT_OP
 %token END COMMA DOUBLE_QUOTE SINGLE_QUOTE UNIDENTIFIED_TOKEN CHARACTER
 %token MAIN IF ELSE WHILE RETURN 
@@ -32,13 +32,17 @@ Prog : HEADER Prog
     | Assgn END Prog
     | ;
 
-Decl : Type ListVar | Type Assgn ;
+Decl : Type ListVar | Type Assgn | Type ArrayDecl ;
 
 ListVar : ListVar COMMA IDENTIFIER | IDENTIFIER ;
 
 Type : INT | FLOAT | DOUBLE | CHAR ;
 
 Assgn : Assgn COMMA IDENTIFIER ASSIGN_OP Expr | IDENTIFIER ASSIGN_OP Expr | Assgn COMMA IDENTIFIER ;
+
+ArrayDecl : ArrayDecl COMMA ArrayDim | ArrayDim ;
+
+ArrayDim : ArrayDim OPEN_SBRACKET Expr CLOSE_SBRACKET | ;
 
 Expr : Expr REL_OP E | E | Expr LOG_OP E ;
 
@@ -62,13 +66,11 @@ Block : OPEN_FBRACKET Stmt CLOSE_FBRACKET ;
 
 WhileL : WHILE OPEN_BRACKET Cond CLOSE_BRACKET While_2 ;
 
-ForL : FOR OPEN_BRACKET ForInit END ForCond END ForIter CLOSE_BRACKET For_2 ;
+ForL : FOR OPEN_BRACKET ForInit END Expr END ForIter CLOSE_BRACKET For_2 ;
 
 ForInit : ForInit COMMA Decl | ForInit COMMA Assgn | Decl | Assgn | ;
 
-ForCond : Expr | ;
-
-ForIter : Assgn COMMA ForIter | Assgn | Unary COMMA ForIter | Unary | ;
+ForIter : Assgn COMMA ForIter | Assgn | Unary COMMA ForIter | Unary ;
 
 For_2 : OPEN_FBRACKET Stmt CLOSE_FBRACKET | SingleStmt | ;
 

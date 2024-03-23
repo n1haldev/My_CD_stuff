@@ -27,6 +27,8 @@ default                           { return DEFAULT; }
 [0-9]+(\.[0-9]+)?                  { return INTEGER; }
 \'[a-zA-z_]\'                       { return CHARACTER; }
 [a-zA-z_][a-zA-z0-9]*             { return IDENTIFIER; }
+\[                                { return OPEN_SBRACKET; }
+\]                                { return CLOSE_SBRACKET; }
 \(                                { return OPEN_BRACKET; }
 \)                                { return CLOSE_BRACKET; }
 \{                                { return OPEN_FBRACKET; }
