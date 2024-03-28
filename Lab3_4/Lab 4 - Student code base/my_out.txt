@@ -1,0 +1,7 @@
+Valid syntax
+--------------symbol table--------------------
+ name	size	type	lineno	scope	val 
+ a		4		2		2		1		12 
+ b		4		2		3		1		7 
+ c		4		2		4		1		a 
+----------------------------------------------

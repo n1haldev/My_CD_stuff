@@ -1,0 +1,6 @@
+Error :syntax error at 7 
+--------------symbol table--------------------
+ name	size	type	lineno	scope	val 
+ x		4		3		3		1		3.4 
+ y		4		2		4		1		45.4 
+----------------------------------------------
